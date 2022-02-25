@@ -12,6 +12,10 @@ declare global {
      * A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
      */
     datetime<FieldName extends string>(fieldName: FieldName, opts?: core.CommonInputFieldConfig<TypeName, FieldName>): void // "DateTime";
+    /**
+     * A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+     */
+    date<FieldName extends string>(fieldName: FieldName, opts?: core.CommonInputFieldConfig<TypeName, FieldName>): void // "Date";
   }
 }
 declare global {
@@ -20,6 +24,10 @@ declare global {
      * A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
      */
     datetime<FieldName extends string>(fieldName: FieldName, ...opts: core.ScalarOutSpread<TypeName, FieldName>): void // "DateTime";
+    /**
+     * A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+     */
+    date<FieldName extends string>(fieldName: FieldName, ...opts: core.ScalarOutSpread<TypeName, FieldName>): void // "Date";
   }
 }
 
@@ -35,6 +43,12 @@ export interface NexusGenInputs {
     published?: boolean | null; // Boolean
     title: string; // String!
   }
+  SignupAuthorInput: { // input type
+    email: string; // String!
+    name: string; // String!
+    password: string; // String!
+    surname: string; // String!
+  }
 }
 
 export interface NexusGenEnums {
@@ -46,10 +60,19 @@ export interface NexusGenScalars {
   Float: number
   Boolean: boolean
   ID: string
+  Date: any
   DateTime: any
 }
 
 export interface NexusGenObjects {
+  Author: { // root type
+    email?: string | null; // String
+    id?: number | null; // Int
+    name?: string | null; // String
+    password?: string | null; // String
+    surname?: string | null; // String
+    ts_created?: NexusGenScalars['Date'] | null; // Date
+  }
   Mutation: {};
   Post: { // root type
     body?: string | null; // String
@@ -72,8 +95,18 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
+  Author: { // field return type
+    email: string | null; // String
+    id: number | null; // Int
+    name: string | null; // String
+    password: string | null; // String
+    posts: Array<NexusGenRootTypes['Post'] | null> | null; // [Post]
+    surname: string | null; // String
+    ts_created: NexusGenScalars['Date'] | null; // Date
+  }
   Mutation: { // field return type
     createPost: NexusGenRootTypes['Post']; // Post!
+    signupAuthor: NexusGenRootTypes['Author']; // Author!
   }
   Post: { // field return type
     body: string | null; // String
@@ -88,8 +121,18 @@ export interface NexusGenFieldTypes {
 }
 
 export interface NexusGenFieldTypeNames {
+  Author: { // field return type name
+    email: 'String'
+    id: 'Int'
+    name: 'String'
+    password: 'String'
+    posts: 'Post'
+    surname: 'String'
+    ts_created: 'Date'
+  }
   Mutation: { // field return type name
     createPost: 'Post'
+    signupAuthor: 'Author'
   }
   Post: { // field return type name
     body: 'String'
@@ -107,6 +150,9 @@ export interface NexusGenArgTypes {
   Mutation: {
     createPost: { // args
       data: NexusGenInputs['PostCreateInput']; // PostCreateInput!
+    }
+    signupAuthor: { // args
+      data: NexusGenInputs['SignupAuthorInput']; // SignupAuthorInput!
     }
   }
 }

@@ -27,3 +27,45 @@ export const Author = objectType({
     
   },
 })
+
+
+export const SignupAuthorInput = inputObjectType({
+  name: 'SignupAuthorInput',
+  definition(t) {
+    t.nonNull.string('name')
+    t.nonNull.string('surname')
+    t.nonNull.string('email')
+    t.nonNull.string('password')
+  },
+})
+
+export const AuthorMutation = extendType({
+  type: 'Mutation',
+  definition(t) {
+    t.nonNull.field('signupAuthor', {
+      type: 'Author',
+      args: {
+        data: nonNull(
+          arg({
+            type: 'SignupAuthorInput',
+          }),
+        ),
+      },
+      async resolve(_root, args, ctx) {
+        //const password = await bcrypt.hash(args.data.password, 10);
+        return ctx.db.author.create({
+          data: {
+            name: args.data.name,
+            surname: args.data.surname,
+            email: args.data.email,
+            password: args.data.password,
+            
+          },
+        })
+    },
+    })
+    
+    
+  },
+  
+})
