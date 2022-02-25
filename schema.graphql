@@ -39,8 +39,10 @@ type Mutation {
 }
 
 type Post {
+  authorId: Int
   body: String
   id: Int
+  postedBy: Author
   published: Boolean
   title: String
   ts_created: DateTime
@@ -54,7 +56,7 @@ input PostCreateInput {
 }
 
 type Query {
-  ok: Boolean!
+  viewPost(id: Int!): Post
 }
 
 input SignupAuthorInput {

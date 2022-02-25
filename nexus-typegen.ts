@@ -83,6 +83,7 @@ export interface NexusGenObjects {
   }
   Mutation: {};
   Post: { // root type
+    authorId?: number | null; // Int
     body?: string | null; // String
     id?: number | null; // Int
     published?: boolean | null; // Boolean
@@ -122,14 +123,16 @@ export interface NexusGenFieldTypes {
     signupAuthor: NexusGenRootTypes['Author']; // Author!
   }
   Post: { // field return type
+    authorId: number | null; // Int
     body: string | null; // String
     id: number | null; // Int
+    postedBy: NexusGenRootTypes['Author'] | null; // Author
     published: boolean | null; // Boolean
     title: string | null; // String
     ts_created: NexusGenScalars['DateTime'] | null; // DateTime
   }
   Query: { // field return type
-    ok: boolean; // Boolean!
+    viewPost: NexusGenRootTypes['Post'] | null; // Post
   }
 }
 
@@ -153,14 +156,16 @@ export interface NexusGenFieldTypeNames {
     signupAuthor: 'Author'
   }
   Post: { // field return type name
+    authorId: 'Int'
     body: 'String'
     id: 'Int'
+    postedBy: 'Author'
     published: 'Boolean'
     title: 'String'
     ts_created: 'DateTime'
   }
   Query: { // field return type name
-    ok: 'Boolean'
+    viewPost: 'Post'
   }
 }
 
@@ -174,6 +179,11 @@ export interface NexusGenArgTypes {
     }
     signupAuthor: { // args
       data: NexusGenInputs['SignupAuthorInput']; // SignupAuthorInput!
+    }
+  }
+  Query: {
+    viewPost: { // args
+      id: number; // Int!
     }
   }
 }
