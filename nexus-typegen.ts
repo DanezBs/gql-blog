@@ -196,7 +196,6 @@ export interface NexusGenArgTypes {
   Query: {
     listPosts: { // args
       filter?: string | null; // String
-      myCursor?: number | null; // Int
       orderBy?: NexusGenInputs['PostOrderByInput'][] | null; // [PostOrderByInput!]
       skip?: number | null; // Int
       take?: number | null; // Int

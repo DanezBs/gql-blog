@@ -61,7 +61,7 @@ input PostOrderByInput {
 }
 
 type Query {
-  listPosts(filter: String, myCursor: Int, orderBy: [PostOrderByInput!], skip: Int, take: Int): [Post!]!
+  listPosts(filter: String, orderBy: [PostOrderByInput!], skip: Int, take: Int): [Post!]!
   viewPost(id: Int!): Post
 }
 

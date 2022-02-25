@@ -144,7 +144,7 @@ export const PostCreateInput = inputObjectType({
             filter: stringArg(),   // 1
             skip: intArg(),   // 1
             take: intArg(),   // 1
-            myCursor: intArg(),   // 1
+            //myCursor: intArg(),   // 1
             orderBy: arg({ type: list(nonNull(PostOrderByInput)) }),  // 1
         },
         resolve(parent, args, ctx) {
@@ -162,14 +162,15 @@ export const PostCreateInput = inputObjectType({
                 AND: [
                   {authorId: userId}
                 ]
+                
               },
               
               
               skip: args?.skip as number | undefined,    // 2
               take: args?.take as number | undefined,
-              cursor: {
-                id: args.myCursor,
-              },
+              //cursor: {
+                //id: args.myCursor,
+              //},
               orderBy: args?.orderBy as db.Enumerable<db.PostOrderByInput> | undefined,
             });
         },
