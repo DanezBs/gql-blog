@@ -16,6 +16,7 @@ model Post {
   title     String
   body      String
   published Boolean
+  ts_created DateTime @default(now())
   author   Author @relation(fields: [authorId], references: [id])
   authorId Int // relation scalar field  (used in the `@relation` attribute above)
 }
