@@ -34,6 +34,7 @@ input LoginAuthorInput {
 
 type Mutation {
   createPost(data: PostCreateInput!): Post!
+  deletePost(id: Int!): Post
   loginAuthor(data: LoginAuthorInput!): AuthPayload!
   signupAuthor(data: SignupAuthorInput!): Author!
 }
@@ -49,7 +50,6 @@ type Post {
 }
 
 input PostCreateInput {
-  authorId: Int!
   body: String
   published: Boolean
   title: String!

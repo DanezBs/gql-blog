@@ -1,7 +1,8 @@
 // api/graphql/Post.ts
 import { objectType, extendType, stringArg, nonNull, intArg, inputObjectType, arg, booleanArg, enumType, list, asNexusMethod } from 'nexus'
-
 import { GraphQLDate, GraphQLDateTime } from 'graphql-iso-date'
+import { z } from "zod"
+
 export const GQLDateTime = asNexusMethod(GraphQLDateTime, 'datetime')
 
 export const Post = objectType({
@@ -31,9 +32,19 @@ export const PostCreateInput = inputObjectType({
       t.nonNull.string('title')
       t.string('body')
       t.boolean('published')
-      t.nonNull.int('authorId')
     },
   })
+
+  async function validateCreatePost(args: any, ctx:any) {
+    const schema = z.object({
+      title: z
+        .string()
+        .min(5,{ message: "Il titolo deve essera almeno di 5 lettere" })
+        
+    })
+  
+    await schema.parseAsync(args)
+  }
 
   export const PostMutation = extendType({
     type: 'Mutation',
@@ -48,21 +59,44 @@ export const PostCreateInput = inputObjectType({
             }),
           ),
         },
+        validate: async (_, args, ctx) => {
+          await validateCreatePost(args.data, ctx)
+        },
         resolve: (_root, args, ctx) => {
-         
+          const { userId } = ctx;
+          if (!userId) {  // 1
+            throw new Error("Cannot post without logging in.");
+        }
           return ctx.db.post.create({
             data: {
               title: args.data.title,
               body: args.data.body,
               published: args.data.published,
-              authorId: args.data.authorId
-              ,
+              authorId: userId
+              
             },
           })
         },
       })
-     
       
+      
+      t.field('deletePost', {
+        type: 'Post',
+        args: {
+          id: nonNull(intArg())
+        },
+        resolve(_root, args, ctx) {
+          const { userId } = ctx;
+          if (!userId) {  // 1
+            throw new Error("Log in!");
+        }
+          return ctx.db.post.delete({
+            where: {
+              id: args.id
+            }
+          })
+        },
+      })
       
     },
     

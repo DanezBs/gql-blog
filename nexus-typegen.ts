@@ -5,6 +5,7 @@
 
 
 import type { Context } from "./api/context"
+import type { ValidateResolver } from "nexus-validate"
 import type { core } from "nexus"
 declare global {
   interface NexusGenCustomInputMethods<TypeName extends string> {
@@ -42,7 +43,6 @@ export interface NexusGenInputs {
     password: string; // String!
   }
   PostCreateInput: { // input type
-    authorId: number; // Int!
     body?: string | null; // String
     published?: boolean | null; // Boolean
     title: string; // String!
@@ -119,6 +119,7 @@ export interface NexusGenFieldTypes {
   }
   Mutation: { // field return type
     createPost: NexusGenRootTypes['Post']; // Post!
+    deletePost: NexusGenRootTypes['Post'] | null; // Post
     loginAuthor: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     signupAuthor: NexusGenRootTypes['Author']; // Author!
   }
@@ -152,6 +153,7 @@ export interface NexusGenFieldTypeNames {
   }
   Mutation: { // field return type name
     createPost: 'Post'
+    deletePost: 'Post'
     loginAuthor: 'AuthPayload'
     signupAuthor: 'Author'
   }
@@ -173,6 +175,9 @@ export interface NexusGenArgTypes {
   Mutation: {
     createPost: { // args
       data: NexusGenInputs['PostCreateInput']; // PostCreateInput!
+    }
+    deletePost: { // args
+      id: number; // Int!
     }
     loginAuthor: { // args
       data: NexusGenInputs['LoginAuthorInput']; // LoginAuthorInput!
@@ -251,6 +256,10 @@ declare global {
   interface NexusGenPluginInputTypeConfig<TypeName extends string> {
   }
   interface NexusGenPluginFieldConfig<TypeName extends string, FieldName extends string> {
+    /**
+     * Validate mutation arguments.
+     */
+    validate?: ValidateResolver<TypeName, FieldName>
   }
   interface NexusGenPluginInputFieldConfig<TypeName extends string, FieldName extends string> {
   }
