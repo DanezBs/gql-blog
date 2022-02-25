@@ -26,5 +26,6 @@ model Author {
   surname  String
   email     String   @unique
   password  String
+  ts_created DateTime @default(now())
   posts Post[]
 }
