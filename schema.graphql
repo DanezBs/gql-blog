@@ -55,7 +55,13 @@ input PostCreateInput {
   title: String!
 }
 
+input PostOrderByInput {
+  id: Sort
+  title: Sort
+}
+
 type Query {
+  listPosts(filter: String, myCursor: Int, orderBy: [PostOrderByInput!], skip: Int, take: Int): [Post!]!
   viewPost(id: Int!): Post
 }
 
@@ -64,4 +70,9 @@ input SignupAuthorInput {
   name: String!
   password: String!
   surname: String!
+}
+
+enum Sort {
+  asc
+  desc
 }

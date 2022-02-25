@@ -47,6 +47,10 @@ export interface NexusGenInputs {
     published?: boolean | null; // Boolean
     title: string; // String!
   }
+  PostOrderByInput: { // input type
+    id?: NexusGenEnums['Sort'] | null; // Sort
+    title?: NexusGenEnums['Sort'] | null; // Sort
+  }
   SignupAuthorInput: { // input type
     email: string; // String!
     name: string; // String!
@@ -56,6 +60,7 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
+  Sort: "asc" | "desc"
 }
 
 export interface NexusGenScalars {
@@ -101,7 +106,7 @@ export interface NexusGenUnions {
 
 export type NexusGenRootTypes = NexusGenObjects
 
-export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
+export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnums
 
 export interface NexusGenFieldTypes {
   AuthPayload: { // field return type
@@ -133,6 +138,7 @@ export interface NexusGenFieldTypes {
     ts_created: NexusGenScalars['DateTime'] | null; // DateTime
   }
   Query: { // field return type
+    listPosts: NexusGenRootTypes['Post'][]; // [Post!]!
     viewPost: NexusGenRootTypes['Post'] | null; // Post
   }
 }
@@ -167,6 +173,7 @@ export interface NexusGenFieldTypeNames {
     ts_created: 'DateTime'
   }
   Query: { // field return type name
+    listPosts: 'Post'
     viewPost: 'Post'
   }
 }
@@ -187,6 +194,13 @@ export interface NexusGenArgTypes {
     }
   }
   Query: {
+    listPosts: { // args
+      filter?: string | null; // String
+      myCursor?: number | null; // Int
+      orderBy?: NexusGenInputs['PostOrderByInput'][] | null; // [PostOrderByInput!]
+      skip?: number | null; // Int
+      take?: number | null; // Int
+    }
     viewPost: { // args
       id: number; // Int!
     }
@@ -203,7 +217,7 @@ export type NexusGenObjectNames = keyof NexusGenObjects;
 
 export type NexusGenInputNames = keyof NexusGenInputs;
 
-export type NexusGenEnumNames = never;
+export type NexusGenEnumNames = keyof NexusGenEnums;
 
 export type NexusGenInterfaceNames = never;
 

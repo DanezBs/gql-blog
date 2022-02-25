@@ -102,6 +102,20 @@ export const PostCreateInput = inputObjectType({
     
   })
 
+  export const PostOrderByInput = inputObjectType({
+    name: "PostOrderByInput",
+    definition(t) {
+        t.field("id", { type: Sort });
+        t.field("title", { type: Sort });
+    },
+  });
+  
+  
+  
+  export const Sort = enumType({
+    name: "Sort",
+    members: ["asc", "desc"],
+  });
 
   export const UserQuery = extendType({
     type: 'Query',
@@ -123,22 +137,21 @@ export const PostCreateInput = inputObjectType({
           })
         },
       })
-  
-      
-      /*
+
       t.nonNull.list.nonNull.field("listPosts", {
         type: "Post",
         args: {
             filter: stringArg(),   // 1
-            myWhere: arg({
-              type: 'PostWhereInput',
-            }),
             skip: intArg(),   // 1
             take: intArg(),   // 1
             myCursor: intArg(),   // 1
             orderBy: arg({ type: list(nonNull(PostOrderByInput)) }),  // 1
         },
         resolve(parent, args, ctx) {
+          const { userId } = ctx;
+          if (!userId) {  // 1
+            throw new Error("Cannot post without logging in.");
+          }
             return ctx.db.post.findMany({
               
               where: {
@@ -146,9 +159,12 @@ export const PostCreateInput = inputObjectType({
                   { title: { contains: args.filter || undefined } },
                   { body: { contains: args.filter || undefined } },
                 ],
+                AND: [
+                  {authorId: userId}
+                ]
               },
               
-              //where: args?.myWhere,
+              
               skip: args?.skip as number | undefined,    // 2
               take: args?.take as number | undefined,
               cursor: {
@@ -158,6 +174,6 @@ export const PostCreateInput = inputObjectType({
             });
         },
     })
-    */
+    
     },
   })
