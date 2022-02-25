@@ -2,6 +2,11 @@
 ### Do not make changes to this file directly
 
 
+type AuthPayload {
+  author: Author!
+  token: String!
+}
+
 type Author {
   email: String
   id: Int
@@ -22,8 +27,14 @@ A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `dat
 """
 scalar DateTime
 
+input LoginAuthorInput {
+  email: String!
+  password: String!
+}
+
 type Mutation {
   createPost(data: PostCreateInput!): Post!
+  loginAuthor(data: LoginAuthorInput!): AuthPayload!
   signupAuthor(data: SignupAuthorInput!): Author!
 }
 

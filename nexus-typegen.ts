@@ -37,6 +37,10 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  LoginAuthorInput: { // input type
+    email: string; // String!
+    password: string; // String!
+  }
   PostCreateInput: { // input type
     authorId: number; // Int!
     body?: string | null; // String
@@ -65,6 +69,10 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  AuthPayload: { // root type
+    author: NexusGenRootTypes['Author']; // Author!
+    token: string; // String!
+  }
   Author: { // root type
     email?: string | null; // String
     id?: number | null; // Int
@@ -95,6 +103,10 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
+  AuthPayload: { // field return type
+    author: NexusGenRootTypes['Author']; // Author!
+    token: string; // String!
+  }
   Author: { // field return type
     email: string | null; // String
     id: number | null; // Int
@@ -106,6 +118,7 @@ export interface NexusGenFieldTypes {
   }
   Mutation: { // field return type
     createPost: NexusGenRootTypes['Post']; // Post!
+    loginAuthor: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     signupAuthor: NexusGenRootTypes['Author']; // Author!
   }
   Post: { // field return type
@@ -121,6 +134,10 @@ export interface NexusGenFieldTypes {
 }
 
 export interface NexusGenFieldTypeNames {
+  AuthPayload: { // field return type name
+    author: 'Author'
+    token: 'String'
+  }
   Author: { // field return type name
     email: 'String'
     id: 'Int'
@@ -132,6 +149,7 @@ export interface NexusGenFieldTypeNames {
   }
   Mutation: { // field return type name
     createPost: 'Post'
+    loginAuthor: 'AuthPayload'
     signupAuthor: 'Author'
   }
   Post: { // field return type name
@@ -150,6 +168,9 @@ export interface NexusGenArgTypes {
   Mutation: {
     createPost: { // args
       data: NexusGenInputs['PostCreateInput']; // PostCreateInput!
+    }
+    loginAuthor: { // args
+      data: NexusGenInputs['LoginAuthorInput']; // LoginAuthorInput!
     }
     signupAuthor: { // args
       data: NexusGenInputs['SignupAuthorInput']; // SignupAuthorInput!
